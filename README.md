@@ -15,6 +15,7 @@ The implementation of these algorithms is then applied to real world scenarios r
 > - [x] Maze solver
 > - [x] Subway routing
 > - [x] Six degrees of separation
+> - [ ] Sliding tiles
 > - [ ] Tictactoe
 
 
