@@ -78,67 +78,82 @@ class Maze(Explorer):
         result.append((action, (r, c)))
     return result
 
+  def get_state_from_str(self, coordinate):
+    ret = coordinate.split(",")
 
-  def output_image(self
-    , filename
-    , explored
-    , solution=None
-    , show_solution=True
-    , show_explored=False
-  ):
-    from PIL import Image, ImageDraw
-    cell_size = 50
-    cell_border = 2
+    if len(ret) != 2:
+      return None
 
-    # Create a blank canvas
-    img = Image.new(
-      "RGBA",
-      (self.width * cell_size, self.height * cell_size),
-      "black"
-    )
-    draw = ImageDraw.Draw(img)
+    try:
+      r = float(ret[0])
+      c = float(ret[1])
+      if 0 <= r < self.height and 0 <= c < self.width:
+        return r,c
+    except:
+      pass
+    return None
+      
 
-    states = solution[1] if solution is not None else None
-    for i, row in enumerate(self.walls):
-      for j, col in enumerate(row):
+def visualize(maze
+  , filename
+  , explored
+  , solution=None
+  , show_solution=True
+  , show_explored=False
+):
+  from PIL import Image, ImageDraw
+  cell_size = 50
+  cell_border = 2
 
-        # Walls
-        if col:
-          fill = (40, 40, 40)
+  # Create a blank canvas
+  img = Image.new(
+    "RGBA",
+    (maze.width * cell_size, maze.height * cell_size),
+    "black"
+  )
+  draw = ImageDraw.Draw(img)
 
-        # Start
-        elif (i, j) == self.start:
-          fill = (255, 0, 0)
+  states = solution[1] if solution is not None else None
+  for i, row in enumerate(maze.walls):
+    for j, col in enumerate(row):
 
-        # Goal
-        elif (i, j) == self.goal:
-          fill = (0, 171, 28)
+      # Walls
+      if col:
+        fill = (40, 40, 40)
 
-        # Solution
-        elif states is not None and show_solution and (i, j) in states:
-          fill = (220, 235, 113)
+      # Start
+      elif (i, j) == maze.start:
+        fill = (255, 0, 0)
 
-        # Explored
-        elif states is not None and show_explored and (i, j) in explored:
-          fill = (212, 97, 85)
+      # Goal
+      elif (i, j) == maze.goal:
+        fill = (0, 171, 28)
 
-        # Empty cell
-        else:
-          fill = (237, 240, 252)
+      # Solution
+      elif states is not None and show_solution and (i, j) in states:
+        fill = (220, 235, 113)
 
-        # Draw cell
-        draw.rectangle(
-          ([(j * cell_size + cell_border, i * cell_size + cell_border),
-            ((j + 1) * cell_size - cell_border, (i + 1) * cell_size - cell_border)]),
-          fill=fill
-        )
+      # Explored
+      elif states is not None and show_explored and (i, j) in explored:
+        fill = (212, 97, 85)
 
-    img.save(filename)
+      # Empty cell
+      else:
+        fill = (237, 240, 252)
+
+      # Draw cell
+      draw.rectangle(
+        ([(j * cell_size + cell_border, i * cell_size + cell_border),
+          ((j + 1) * cell_size - cell_border, (i + 1) * cell_size - cell_border)]),
+        fill=fill
+      )
+
+  img.save(filename)
 
 
 if __name__=="__main__":
   if len(sys.argv) != 2:
-    sys.exit("Usage: python maze.py maze.txt")
+    sys.exit("Usage: python maze.py data/mazes/maze1.txt")
 
   m = Maze(sys.argv[1])
   s = Search(m)
@@ -149,4 +164,4 @@ if __name__=="__main__":
   print("States Explored:", len(explored))
   print("Solution:")
   m.print(solution)
-  m.output_image("maze.png", explored, solution, show_explored=True)
+  visualize(m, "maze.png", explored, solution, show_explored=True)

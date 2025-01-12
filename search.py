@@ -41,7 +41,8 @@ class QueueFrontier(StackFrontier):
 
 class Explorer:
   def __init__(self):
-    return
+    self.start    = None
+    self.goal     = None
 
   @abc.abstractmethod
   def neighbors(self, state):
@@ -49,6 +50,10 @@ class Explorer:
 
   @abc.abstractmethod
   def print(self, solution):
+    pass
+
+  @abc.abstractmethod
+  def get_state_from_str(self, station):
     pass
 
 
