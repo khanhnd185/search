@@ -62,8 +62,6 @@ class Search:
 
   def __init__(self, explorer : Explorer, frontier="queue"):
 
-    self.solution     = None
-    self.num_explored = 0
     self.explorer     = explorer
     if   frontier == "queue": self.frontier = QueueFrontier()
     elif frontier == "stack": self.frontier = StackFrontier()
