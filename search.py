@@ -39,6 +39,38 @@ class QueueFrontier(StackFrontier):
       self.frontier = self.frontier[1:]
       return node
 
+
+class GreedyFrontier(StackFrontier):
+  def __init__(self, ref):
+    StackFrontier.__init__(self)
+    self.ref = ref
+
+  def remove(self):
+    if self.empty():
+      raise Exception("empty frontier")
+    else:
+      ret_i, ret_val = 0, self.frontier[0]
+      for i, p in enumerate(self.frontier):
+        if p.distance(self.ref) < ret_val.distance(self.ref):
+          ret_i, ret_val = i, p
+
+      self.frontier.pop(ret_i)
+      return ret_val
+
+class AStarFrontier(GreedyFrontier):
+
+    def remove(self):
+      if self.empty():
+        raise Exception("empty frontier")
+      else:
+        ret_i, ret_val = 0, self.frontier[0]
+        for i, p in enumerate(self.frontier):
+          if p.cost(self.ref) < ret_val.cost(self.ref):
+            ret_i, ret_val = i, p
+
+        self.frontier.pop(ret_i)
+        return ret_val
+
 class Explorer:
   def __init__(self):
     self.start    = None
@@ -65,6 +97,8 @@ class Search:
     self.explorer     = explorer
     if   frontier == "queue": self.frontier = QueueFrontier()
     elif frontier == "stack": self.frontier = StackFrontier()
+    elif frontier == "astar": self.frontier = AStarFrontier()
+    elif frontier == "greed": self.frontier = GreedyFrontier()
     else: raise ValueError
 
 

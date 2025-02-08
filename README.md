@@ -9,13 +9,14 @@ The implementation of these algorithms is then applied to real world scenarios r
 **Search Algorithm**
 > - [x] BFS
 > - [x] DFS
-> - [ ] Astar
+> - [x] Astar
+> - [x] Greedy
 
 **Application**
 > - [x] Maze solver
 > - [x] Subway routing
 > - [x] Six degrees of separation
-> - [ ] Sliding tiles
+> - [-] Sliding tiles
 > - [ ] Tictactoe
 
 
